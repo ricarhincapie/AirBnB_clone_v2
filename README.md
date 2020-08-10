@@ -1,6 +1,6 @@
 <center> <h1>HBNB - The Console</h1> </center>
 
-Repository Forked from [Justin Majetich](https://github.com/justinmajetich) for Educational Purposes. 
+Repository Forked from [Justin Majetich](https://github.com/justinmajetich) and [Ezra Nobrega](https://github.com/eNobreg) for Educational Purposes. 
 
 Complemented by Bryan Ortiz and Ricardo Hincapie
 
