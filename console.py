@@ -156,11 +156,11 @@ class HBNBCommand(cmd.Cmd):
                     dot = sub_p[1].find(".")
                     if dot == -1:
                         continue
-                    setattr(new_instance, sub_p[0], sub_p[1])
+                    setattr(new_instance, sub_p[0], float(sub_p[1]))
                     # final_dic[sub_p[0]] = float(sub_p[1])
 # Add to final dictionary
                 elif watch_man == 3:  # Validates Int case
-                    setattr(new_instance, sub_p[0], sub_p[1])
+                    setattr(new_instance, sub_p[0], int(sub_p[1]))
                     # final_dic[sub_p[0]] = int(sub_p[1])
 # Add to final dictionary
                 else:
