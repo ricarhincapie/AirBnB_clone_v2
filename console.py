@@ -148,15 +148,6 @@ class HBNBCommand(cmd.Cmd):
                         continue
                     line = sub_p[1][1:-1]
 # Line without the quotes to search for an extra pair of quotes(!)
-                    quote1 = line.find("\"")
-                    if quote1 != - 1:
-                        quote2 = line.find("\"")
-                        # Quotes1 and 2 have the index inside the
-                        # line for the quotes
-                        if line[quote1 - 1:quote1] != "\\" and\
-                           line[quote2 - 1:quote2] != "\\":
-# If the quotes are not preceded by a backslash, continue
-                            continue
                     replace = sub_p[1].replace("_", " ")
                     final_dic[sub_p[0]] = replace  # Add to final dictionary
                 elif watch_man == 2:  # Validates Float case
