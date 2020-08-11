@@ -157,8 +157,8 @@ class HBNBCommand(cmd.Cmd):
                            line[quote2 - 1:quote2] != "\\":
 # If the quotes are not preceded by a backslash, continue
                             continue
-                    sub_p[1].replace(" ", "_")
-                    final_dic[sub_p[0]] = sub_p[1]  # Add to final dictionary
+                    replace = sub_p[1].replace("_", " ")
+                    final_dic[sub_p[0]] = replace  # Add to final dictionary
                 elif watch_man == 2:  # Validates Float case
                     dot = sub_p[1].find(".")
                     if dot == -1:
