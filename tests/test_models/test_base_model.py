@@ -13,7 +13,7 @@ class test_basemodel(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         """ """
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  # Inherits Unittest method
         self.name = 'BaseModel'
         self.value = BaseModel
 
@@ -33,15 +33,15 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(i), self.value)
 
     def test_kwargs(self):
-        """ """
-        i = self.value()
+        """ Test if kwargs method creates a new object """
+        i = self.value()  # Instance of BaseModel
         copy = i.to_dict()
         new = BaseModel(**copy)
-        self.assertFalse(new is i)
+        self.assertFalse(new is i)  # Two different objects
 
     def test_kwargs_int(self):
         """ """
-        i = self.value()
+        i = self.value()  # Instance of BaseModel
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
@@ -66,7 +66,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         i = self.value()
         n = i.to_dict()
-        self.assertEqual(i.to_dict(), n)
+        self.assertEqual(i.to_dict(), n)  # DUMB TEST
 
     def test_kwargs_none(self):
         """ """
@@ -82,7 +82,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_id(self):
         """ """
-        new = self.value()
+        new = self.value()  # Instance of BaseModel
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):

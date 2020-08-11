@@ -11,6 +11,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -121,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        str_arg = shlex.split(args)
+        str_arg = shlex.split(args)  #Shlex 
         print(args)
         print(type(args))
         print(str_arg[0])
@@ -136,13 +137,25 @@ class HBNBCommand(cmd.Cmd):
                      "max_guest", "price_by_night"]
         final_dic = {}  # Dictionary to pass on to the Class **kwargs
         for param in range(len(str_arg)):
+            print("Param is", param)
             if param == 0:
                 continue
+            
             else:
+                watch_man = 0  # The Guachiman
                 sub_p = str_arg[param].split("=")  # Key[0]=Value[1]
-                print(sub_p[0])
-                print(sub_p[1])
-                if str(sub_p[0]) in g_str:  # Validates String case
+                print("Split [0]", sub_p[0])
+                print("Split [1]", sub_p[1])
+                if str(sub_p[0]) in g_str:
+                    watch_man = 1
+                elif str(sub_p[0]) in g_float: 
+                    watch_man = 2
+                elif str(sub_p[0]) in g_int:
+                    watch_man = 3
+                else:
+                    watch_man = 4
+                print("The watch man is ", watch_man)
+                if watch_man == 1:  # Validates String case
                     if not '\"' in sub_p[1][:1] and '\"' in sub_p[1][-1]:  
                     # If doesn't start with and finish with, don't include
                         continue
@@ -156,17 +169,22 @@ class HBNBCommand(cmd.Cmd):
                         # If the quotes are not preceded by a backslash, continue
                             continue
                     sub_p[1].replace(" ", "_")
-                    final_dic[sub_p[0]] = sub_p[1]  # Add to final dictionary "New York"
-                elif sub_p[0] in g_float:  # Validates Float case
-                    dot = sub.p[1].find(".")
+                    final_dic[sub_p[0]] = sub_p[1]  # Add to final dictionary
+                elif watch_man == 2:  # Validates Float case
+                    dot = sub_p[1].find(".")
                     if dot == -1:
                         continue
                     final_dic[sub_p[0]] = float(sub_p[1])  # Add to final dictionary
-                elif sub_p in g_int:  # Validates Int case
+                elif watch_man == 3:  # Validates Int case
                     final_dic[sub_p[0]] = int(sub_p[1])  # Add to final dictionary
+                else:
+                    continue
+
         print("")
         print(final_dic)
         print("")
+
+        new_instance = BaseModel(**final_dic)
         new_instance = HBNBCommand.classes[str_arg[0]](**final_dic) # Here creates the instance, insert class and dictionary!
         storage.save()
         print(new_instance.id)
