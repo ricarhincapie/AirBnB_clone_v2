@@ -20,17 +20,13 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
+    classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+               'Review': Review}
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {
-             'number_rooms': int, 'number_bathrooms': int,
+    types = {'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+             'latitude': float, 'longitude': float}
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -53,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
             pline = line[:]  # parsed line
 
             # isolate <class name>
-            _cls = pline[:pline.find('.')] 
+            _cls = pline[:pline.find('.')]
 
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
@@ -122,51 +118,44 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        str_arg = shlex.split(args)  #Shlex 
-        print(args)
-        print(type(args))
-        print(str_arg[0])
-        print(len(str_arg[0]))
-        print(str_arg[1])
+        str_arg = shlex.split(args)  # Shlex
         if str_arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
         g_str = ["name", "user_id", "city_id"]
         g_float = ["latitude", "longitude"]
-        g_int = ["number_rooms", "number_bathrooms", 
-                     "max_guest", "price_by_night"]
+        g_int = ["number_rooms", "number_bathrooms",
+                 "max_guest", "price_by_night"]
         final_dic = {}  # Dictionary to pass on to the Class **kwargs
         for param in range(len(str_arg)):
-            print("Param is", param)
             if param == 0:
                 continue
-            
+
             else:
                 watch_man = 0  # The Guachiman
                 sub_p = str_arg[param].split("=")  # Key[0]=Value[1]
-                print("Split [0]", sub_p[0])
-                print("Split [1]", sub_p[1])
                 if str(sub_p[0]) in g_str:
                     watch_man = 1
-                elif str(sub_p[0]) in g_float: 
+                elif str(sub_p[0]) in g_float:
                     watch_man = 2
                 elif str(sub_p[0]) in g_int:
                     watch_man = 3
                 else:
                     watch_man = 4
-                print("The watch man is ", watch_man)
                 if watch_man == 1:  # Validates String case
-                    if not '\"' in sub_p[1][:1] and '\"' in sub_p[1][-1]:  
-                    # If doesn't start with and finish with, don't include
+                    if not '\"' in sub_p[1][:1] and '\"' in sub_p[1][-1]:
+# If doesn't start with and finish with, don't include
                         continue
                     line = sub_p[1][1:-1]
-                    # Line without the quotes to search for an extra pair of quotes(!)
+# Line without the quotes to search for an extra pair of quotes(!)
                     quote1 = line.find("\"")
                     if quote1 != - 1:
                         quote2 = line.find("\"")
-                        # Quotes1 and 2 have the index inside the line for the quotes
-                        if line[quote1 -1:quote1] != "\\" and line[quote2 -1:quote2] != "\\":
-                        # If the quotes are not preceded by a backslash, continue
+                        # Quotes1 and 2 have the index inside the
+                        # line for the quotes
+                        if line[quote1 - 1:quote1] != "\\" and\
+                           line[quote2 - 1:quote2] != "\\":
+# If the quotes are not preceded by a backslash, continue
                             continue
                     sub_p[1].replace(" ", "_")
                     final_dic[sub_p[0]] = sub_p[1]  # Add to final dictionary
@@ -174,18 +163,16 @@ class HBNBCommand(cmd.Cmd):
                     dot = sub_p[1].find(".")
                     if dot == -1:
                         continue
-                    final_dic[sub_p[0]] = float(sub_p[1])  # Add to final dictionary
+                    final_dic[sub_p[0]] = float(sub_p[1])
+# Add to final dictionary
                 elif watch_man == 3:  # Validates Int case
-                    final_dic[sub_p[0]] = int(sub_p[1])  # Add to final dictionary
+                    final_dic[sub_p[0]] = int(sub_p[1])
+# Add to final dictionary
                 else:
                     continue
-
-        print("")
-        print(final_dic)
-        print("")
-
         new_instance = BaseModel(**final_dic)
-        new_instance = HBNBCommand.classes[str_arg[0]](**final_dic) # Here creates the instance, insert class and dictionary!
+        new_instance = HBNBCommand.classes[str_arg[0]](**final_dic)
+# Here creates the instance, insert class and dictionary!
         storage.save()
         print(new_instance.id)
         storage.save()
