@@ -2,16 +2,15 @@
 """ Console Module """
 import cmd
 import sys
-import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
+from models.engine.file_storage import FileStorage
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
@@ -20,13 +19,18 @@ class HBNBCommand(cmd.Cmd):
     # determines prompt for interactive/non-interactive modes
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
-    classes = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+    classes = {
+               'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review}
+               'Review': Review
+              }
+    
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    types = {'number_rooms': int, 'number_bathrooms': int,
+    types = {
+             'number_rooms': int, 'number_bathrooms': int,
              'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float}
+             'latitude': float, 'longitude': float
+            }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -35,7 +39,6 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         """Reformat command line for advanced command syntax.
-
         Usage: <class name>.<command>([<id> [<*args> or <**kwargs>]])
         (Brackets denote optional fields in usage example.)
         """
@@ -112,18 +115,19 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class
-        Usage: <class name> <keyname="value"> <keyname="value"> ...
-        """
+        """ Create an object of any class"""
+         
         if not args:
             print("** class name missing **")
-            return
-        str_arg = shlex.split(args)  # Shlex
-        if str_arg[0] not in HBNBCommand.classes:
+        #------
+        parameters = args.split(" ")
+        if parameters[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
+            print(parameters[0])
             return
-        new_instance = HBNBCommand.classes[str_arg[0]]()  # Instance of Object
-        for param in str_arg[1:]:
+        new_instance = HBNBCommand.classes[parameters[0]]()
+        kwargs = {}
+        for param in parameters[1:]:
             key, value = param.split("=")
             if value[0] == '"':
                 value = value.strip('"').replace("_", " ")
@@ -136,11 +140,12 @@ class HBNBCommand(cmd.Cmd):
                 int(value)
             except ValueError:
                 pass
-
+           
         new_instance.save()
-        storage.save()
         print(new_instance.id)
-        # storage.save()
+        #----
+            
+
 
     def help_create(self):
         """ Help information for the create method """
