@@ -128,6 +128,15 @@ class HBNBCommand(cmd.Cmd):
             if value[0] == '"':
                 value = value.strip('"').replace("_", " ")
             setattr(new_instance, key, value)
+            try:
+                float(value)
+            except ValueError:
+                pass
+            try:
+                int(value)
+            except ValueError:
+                pass
+
         new_instance.save()
         storage.save()
         print(new_instance.id)
