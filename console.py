@@ -123,50 +123,13 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[str_arg[0]]()  # Instance of Object
-        g_str = ["name", "user_id", "city_id"]
-        g_float = ["latitude", "longitude"]
-        g_int = ["number_rooms", "number_bathrooms",
-                 "max_guest", "price_by_night"]
-        final_dic = {}  # Dictionary to pass on to the Class **kwargs
-        for param in range(len(str_arg)):
-            if param == 0:
-                continue
-
-            else:
-                watch_man = 0  # The Guachiman
-                sub_p = str_arg[param].split("=")  # Key[0]=Value[1]
-                if str(sub_p[0]) in g_str:
-                    watch_man = 1
-                elif str(sub_p[0]) in g_float:
-                    watch_man = 2
-                elif str(sub_p[0]) in g_int:
-                    watch_man = 3
-                else:
-                    watch_man = 4
-                if watch_man == 1:  # Validates String case
-                    if not '\"' in sub_p[1][:1] and '\"' in sub_p[1][-1]:
-# If doesn't start with and finish with, don't include
-                        continue
-                    line = sub_p[1][1:-1]
-# Line without the quotes to search for an extra pair of quotes(!)
-                    replace = sub_p[1].replace("_", " ")
-                    setattr(new_instance, sub_p[0], replace)
-                    # final_dic[sub_p[0]] = replace  # Add to final dictionary
-                elif watch_man == 2:  # Validates Float case
-                    dot = sub_p[1].find(".")
-                    if dot == -1:
-                        continue
-                    setattr(new_instance, sub_p[0], float(sub_p[1]))
-                    # final_dic[sub_p[0]] = float(sub_p[1])
-# Add to final dictionary
-                elif watch_man == 3:  # Validates Int case
-                    setattr(new_instance, sub_p[0], int(sub_p[1]))
-                    # final_dic[sub_p[0]] = int(sub_p[1])
-# Add to final dictionary
-                else:
-                    continue
+        for param in str_arg[1:]:
+            key, value = param.split("=")
+            if value[0] == '"':
+                value = value.strip('"').replace("_", " ")
+            setattr(new_instance, key, value)
         new_instance.save()
-        # storage.save()
+        storage.save()
         print(new_instance.id)
         # storage.save()
 
