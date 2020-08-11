@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -120,7 +121,12 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        str_arg = args.partition(" ")
+        str_arg = shlex.split(args)
+        print(args)
+        print(type(args))
+        print(str_arg[0])
+        print(len(str_arg[0]))
+        print(str_arg[1])
         if str_arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
@@ -128,43 +134,40 @@ class HBNBCommand(cmd.Cmd):
         g_float = ["latitude", "longitude"]
         g_int = ["number_rooms", "number_bathrooms", 
                      "max_guest", "price_by_night"]
-        
+        final_dic = {}  # Dictionary to pass on to the Class **kwargs
         for param in range(len(str_arg)):
-            if param = 0:
+            if param == 0:
                 continue
             else:
-                sub_p = str_arg[param].partition("=")  # Key[0]=Value[1]
-                if sub_p[0] in g_str:
-                    if not '\"' in sub_p[1] and '\"' in sub_p[1]:  
+                sub_p = str_arg[param].split("=")  # Key[0]=Value[1]
+                print(sub_p[0])
+                print(sub_p[1])
+                if str(sub_p[0]) in g_str:  # Validates String case
+                    if not '\"' in sub_p[1][:1] and '\"' in sub_p[1][-1]:  
                     # If doesn't start with and finish with, don't include
                         continue
                     line = sub_p[1][1:-1]
-                    # Line without the quotes
+                    # Line without the quotes to search for an extra pair of quotes(!)
                     quote1 = line.find("\"")
                     if quote1 != - 1:
                         quote2 = line.find("\"")
-                    # Quotes have the place inside the line for the quotes
-                    if line[quote1 -1:quote1] != "\\" and line[quote2 -1:quote2] != "\\":
-                    # If the quotes are not preceded by a backslash, continue
+                        # Quotes1 and 2 have the index inside the line for the quotes
+                        if line[quote1 -1:quote1] != "\\" and line[quote2 -1:quote2] != "\\":
+                        # If the quotes are not preceded by a backslash, continue
+                            continue
+                    sub_p[1].replace(" ", "_")
+                    final_dic[sub_p[0]] = sub_p[1]  # Add to final dictionary "New York"
+                elif sub_p[0] in g_float:  # Validates Float case
+                    dot = sub.p[1].find(".")
+                    if dot == -1:
                         continue
-
-
-                    
-                    if quote1 != -1:
-                        quote2 = line.find("\"")
-                    line = sub_p[1][1:sub_p[1].find('\"')]
-
-
-                    sub_p[1].find('\"', )
-                    if line == -1:  # If line 
-
-
-
-
-
-
-
-        new_instance = HBNBCommand.classes[args]()
+                    final_dic[sub_p[0]] = float(sub_p[1])  # Add to final dictionary
+                elif sub_p in g_int:  # Validates Int case
+                    final_dic[sub_p[0]] = int(sub_p[1])  # Add to final dictionary
+        print("")
+        print(final_dic)
+        print("")
+        new_instance = HBNBCommand.classes[str_arg[0]](**final_dic) # Here creates the instance, insert class and dictionary!
         storage.save()
         print(new_instance.id)
         storage.save()
