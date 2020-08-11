@@ -51,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
             pline = line[:]  # parsed line
 
             # isolate <class name>
-            _cls = pline[:pline.find('.')]
+            _cls = pline[:pline.find('.')] 
 
             # isolate and validate <command>
             _cmd = pline[pline.find('.') + 1:pline.find('(')]
@@ -114,13 +114,56 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """ Create an object of any class
+        Usage: <class name> <keyname="value"> <keyname="value"> ...
+        """
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        str_arg = args.partition(" ")
+        if str_arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        g_str = ["name", "user_id", "city_id"]
+        g_float = ["latitude", "longitude"]
+        g_int = ["number_rooms", "number_bathrooms", 
+                     "max_guest", "price_by_night"]
+        
+        for param in range(len(str_arg)):
+            if param = 0:
+                continue
+            else:
+                sub_p = str_arg[param].partition("=")  # Key[0]=Value[1]
+                if sub_p[0] in g_str:
+                    if not '\"' in sub_p[1] and '\"' in sub_p[1]:  
+                    # If doesn't start with and finish with, don't include
+                        continue
+                    line = sub_p[1][1:-1]
+                    # Line without the quotes
+                    quote1 = line.find("\"")
+                    if quote1 != - 1:
+                        quote2 = line.find("\"")
+                    # Quotes have the place inside the line for the quotes
+                    if line[quote1 -1:quote1] != "\\" and line[quote2 -1:quote2] != "\\":
+                    # If the quotes are not preceded by a backslash, continue
+                        continue
+
+
+                    
+                    if quote1 != -1:
+                        quote2 = line.find("\"")
+                    line = sub_p[1][1:sub_p[1].find('\"')]
+
+
+                    sub_p[1].find('\"', )
+                    if line == -1:  # If line 
+
+
+
+
+
+
+
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
