@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import shlex
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.engine.file_storage import FileStorage
@@ -11,6 +12,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+
 
 
 class HBNBCommand(cmd.Cmd):
@@ -24,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
                'State': State, 'City': City, 'Amenity': Amenity,
                'Review': Review
               }
-    
+
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
              'number_rooms': int, 'number_bathrooms': int,
@@ -116,17 +118,17 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-         
+
         if not args:
             print("** class name missing **")
         #------
-        parameters = args.split(" ")
+        parameters = shlex.split(args)
         if parameters[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             print(parameters[0])
             return
         new_instance = HBNBCommand.classes[parameters[0]]()
-        kwargs = {}
+
         for param in parameters[1:]:
             key, value = param.split("=")
             if value[0] == '"':
@@ -140,11 +142,11 @@ class HBNBCommand(cmd.Cmd):
                 int(value)
             except ValueError:
                 pass
-           
+
         new_instance.save()
         print(new_instance.id)
         #----
-            
+
 
 
     def help_create(self):
