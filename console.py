@@ -122,6 +122,7 @@ class HBNBCommand(cmd.Cmd):
         if str_arg[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
+        new_instance = HBNBCommand.classes[str_arg[0]]()  # Instance of Object
         g_str = ["name", "user_id", "city_id"]
         g_float = ["latitude", "longitude"]
         g_int = ["number_rooms", "number_bathrooms",
@@ -149,24 +150,25 @@ class HBNBCommand(cmd.Cmd):
                     line = sub_p[1][1:-1]
 # Line without the quotes to search for an extra pair of quotes(!)
                     replace = sub_p[1].replace("_", " ")
-                    final_dic[sub_p[0]] = replace  # Add to final dictionary
+                    setattr(new_instance, sub_p[0], replace)
+                    # final_dic[sub_p[0]] = replace  # Add to final dictionary
                 elif watch_man == 2:  # Validates Float case
                     dot = sub_p[1].find(".")
                     if dot == -1:
                         continue
-                    final_dic[sub_p[0]] = float(sub_p[1])
+                    setattr(new_instance, sub_p[0], sub_p[1])
+                    # final_dic[sub_p[0]] = float(sub_p[1])
 # Add to final dictionary
                 elif watch_man == 3:  # Validates Int case
-                    final_dic[sub_p[0]] = int(sub_p[1])
+                    setattr(new_instance, sub_p[0], sub_p[1])
+                    # final_dic[sub_p[0]] = int(sub_p[1])
 # Add to final dictionary
                 else:
                     continue
-        new_instance = BaseModel(**final_dic)
-        new_instance = HBNBCommand.classes[str_arg[0]](**final_dic)
-# Here creates the instance, insert class and dictionary!
-        storage.save()
+        new_instance.save()
+        # storage.save()
         print(new_instance.id)
-        storage.save()
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """
