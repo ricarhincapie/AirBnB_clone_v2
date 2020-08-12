@@ -16,7 +16,7 @@ class FileStorage:
         for key in FileStorage.__objects.keys():
             o_class, o_id = key.split(".")
             if o_class == cls.__name__:
-                new_dict[key] = FileStorage.__objects[o_class + "." + o_id]
+                new_dict[key] = FileStorage.__objects[key]
         return new_dict
 
     def new(self, obj):
