@@ -1,0 +1,2 @@
+Task 6: BaseModel: Def delete(self)
+    Call to the method storage.delete(self)
