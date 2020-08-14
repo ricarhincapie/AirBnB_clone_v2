@@ -23,8 +23,7 @@ class Place(BaseModel, Base):
                   nullable=False)
 
     description = Column(String(1024),
-                         default="",
-                         nullable=True)
+                         default="")
 
     number_rooms = Column(Integer,
                           nullable=False,
@@ -45,6 +44,8 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
 
     longitude = Column(Float)
+
+    amenity_ids = []
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review",
