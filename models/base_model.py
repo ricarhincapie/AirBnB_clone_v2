@@ -3,7 +3,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, String, DateTime
 
 Base = declarative_base()
 
@@ -16,16 +16,13 @@ class BaseModel:
                 primary_key=True)
 
     created_at = Column(DateTime, default=datetime.utcnow,
-                        nullable=False)  #Not sure it is like this
-
+                        nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow,
                         nullable=False)
-
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
-            from models import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
@@ -37,10 +34,10 @@ class BaseModel:
                 setattr(self, key, value)  # Attributes from a dict when init
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
-
-
-            del kwargs['__class__']
-            self.__dict__.update(kwargs)
+            if 'created_at' not in kwargs:
+                self.created_at = datetime.now()
+            if 'updated_at' not in kwargs:
+                self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns a string representation of the instance"""
