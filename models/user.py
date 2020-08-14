@@ -20,4 +20,4 @@ class User(BaseModel, Base):
 
     places = relationship("Place",
                           backref="user",
-                          cascade="delete, all")
+                          cascade="all, delete")
