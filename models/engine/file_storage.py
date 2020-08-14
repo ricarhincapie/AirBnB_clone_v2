@@ -53,6 +53,7 @@ class FileStorage:
                 temp = json.load(f)
                 for key, val in temp.items():
                     self.all()[key] = classes[val['__class__']](**val)
+                    # new_obj = State(**dict)
         except FileNotFoundError:
             pass
 

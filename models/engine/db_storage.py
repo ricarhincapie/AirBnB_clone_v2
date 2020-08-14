@@ -32,3 +32,45 @@ class DBStorage:
         if hbnb_env == "test":
             Base.metadata.drop_all(self.__engine)
 
+    def all(self, cls=None):
+        """
+        Query on the current database session (self.__session)
+        all objects depending of the class name (argument cls)
+        """
+        my_dict = {}  # [class.id: {obj}
+        if cls is None:
+            query = self.__session.query(User, State, City,
+                                         Amenity, Place, 
+                                         Review).all()
+            for inst in query:
+                key = inst.__class__.__name__ + "." + inst.id
+                my_dict[key] = inst
+
+        else:
+            query = self.__session.query(cls).all()  # A list of objects class cls
+
+            for inst in query:
+                key = inst.__class__.__name__ + "." + inst.id
+                my_dict[key] = inst
+
+        return my_dict
+
+    def new(self, obj):
+        """Adds new object to db storage"""
+        self.__session.add(obj)
+
+    def save(self):
+        """commit all changes of the current database session"""
+        self.__session.commit()
+    
+    def delete(self, obj=None):
+        """delete from the current database session obj if not None"""
+        if obj is not None:
+            self.__session.delete(obj)
+
+    def reload(self):
+        """Loads storage dictionary from database"""
+        Base.metadata.create_all(self.__engine)  # This brings you all the tables (classes) from DB
+        Session = scoped_session(sessionmaker(
+            bind=self.__engine, expire_on_commit=False))
+        self.__session = Session() 
