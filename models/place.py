@@ -21,7 +21,8 @@ class Place(BaseModel, Base):
                   nullable=False)
 
     description = Column(String(1024),
-                         default="")
+                         default="",
+                         nullable=True)
 
     number_rooms = Column(Integer,
                           nullable=False,
