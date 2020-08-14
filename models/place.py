@@ -46,7 +46,7 @@ class Place(BaseModel, Base):
 
     longitude = Column(Float)
 
-    if getenv['HBNB_TYPE_STORAGE'] == db:
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review",
                                cascade="all, delete",
                                backref="place")
