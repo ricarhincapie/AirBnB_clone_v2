@@ -8,7 +8,7 @@ from models.user import User
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 import os
 
 
@@ -40,14 +40,15 @@ class DBStorage:
         my_dict = {}  # [class.id: {obj}
         if cls is None:
             query = self.__session.query(User, State, City,
-                                         Amenity, Place, 
+                                         Amenity, Place,
                                          Review).all()
             for inst in query:
                 key = inst.__class__.__name__ + "." + inst.id
                 my_dict[key] = inst
 
         else:
-            query = self.__session.query(cls).all()  # A list of objects class cls
+            query = self.__session.query(cls).all()
+            # A list of objects class cls
 
             for inst in query:
                 key = inst.__class__.__name__ + "." + inst.id
@@ -62,7 +63,7 @@ class DBStorage:
     def save(self):
         """commit all changes of the current database session"""
         self.__session.commit()
-    
+
     def delete(self, obj=None):
         """delete from the current database session obj if not None"""
         if obj is not None:
@@ -70,7 +71,7 @@ class DBStorage:
 
     def reload(self):
         """Loads storage dictionary from database"""
-        Base.metadata.create_all(self.__engine)  # This brings you all the tables (classes) from DB
+        Base.metadata.create_all(self.__engine)
         Session = scoped_session(sessionmaker(
             bind=self.__engine, expire_on_commit=False))
-        self.__session = Session() 
+        self.__session = Session()
