@@ -35,6 +35,6 @@ class Place(BaseModel, Base):
                             nullable=False,
                             default=0)
     latitude = Column(Float,
-                        nullable=True)
+                      nullable=True)
     longitude = Column(Float,
-                        nullable=True)
+                       nullable=True)
