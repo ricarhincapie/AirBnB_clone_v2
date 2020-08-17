@@ -38,3 +38,29 @@ class Place(BaseModel, Base):
                       nullable=True)
     longitude = Column(Float,
                        nullable=True)
+
+    amenities_ids = []
+
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
+
+    if getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def amenities(self):
+            """getter amenity that returns the list of Amenity"""
+            return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            "Setter amenities"
+            if "Amenity" == type(obj).__name__:
+                self.amenities_ids.append(obj.id)
+
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60),
+                             ForeignKey('places.id'),
+                             primary_key=True, nullable=False),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             primary_key=True, nullable=True))
