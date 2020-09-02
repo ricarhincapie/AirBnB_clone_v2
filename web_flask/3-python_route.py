@@ -18,7 +18,7 @@ def start_app():
 def hbnb():
     """Routes the /hbnb GET request
     """
-    return 'hbnb'
+    return 'HBNB'
 
 
 @app.route('/c/<adjective>', strict_slashes=False)
