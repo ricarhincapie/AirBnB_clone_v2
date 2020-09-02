@@ -28,6 +28,7 @@ def c_is_fun(adjective):
     """
     return 'C %s' % escape(adjective.replace("_", " "))
 
+
 # Strict slashes allows that '/python' and '/python/'
 # have the same result
 @app.route('/python', strict_slashes=False)
