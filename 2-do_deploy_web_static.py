@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Generates a .tgz archive"""
+"""Transfers and extracts"""
 
 from fabric.api import run, put, env
 from os.path import exists
