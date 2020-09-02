@@ -5,24 +5,23 @@
 from flask import Flask, escape
 
 app = Flask(__name__)
-app.url_map.strict_slashes = False
 
 
-@app.route('/')
+@app.route('/', strict_slashes=False)
 def start_app():
     """Routes the / GET request
     """
     return 'Hello HBNB!'
 
 
-@app.route('/hbnb')
+@app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """Routes the /hbnb GET request
     """
     return 'hbnb'
 
 
-@app.route('/c/<adjective>')
+@app.route('/c/<adjective>', strict_slashes=False)
 def c_is_fun(adjective):
     """Uses variable rules to modify return according to URL
     """
