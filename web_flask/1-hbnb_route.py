@@ -9,10 +9,14 @@ app.url_map.strict_slashes = False
 
 @app.route('/')
 def start_app():
+    """Routes the / GET request
+    """
     return 'Hello HBNB!'
 
 @app.route('/hbnb')
 def hbnb():
+    """Routes the /hbnb GET request
+    """
     return 'hbnb'
 
 if __name__ == '__main__':

@@ -10,16 +10,22 @@ app.url_map.strict_slashes = False
 
 @app.route('/')
 def start_app():
+    """Routes the / GET request
+    """
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb')
 def hbnb():
+    """Routes the /hbnb GET request
+    """
     return 'hbnb'
 
 
 @app.route('/c/<adjective>')
 def c_is_fun(adjective):
+    """Uses variable rules to modify return according to URL
+    """
     return 'C %s' % escape(adjective.replace("_", " "))
 
 if __name__ == '__main__':

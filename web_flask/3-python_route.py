@@ -10,16 +10,22 @@ app.url_map.strict_slashes = False
 
 @app.route('/')
 def start_app():
+    """Routes the / GET request
+    """
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb')
 def hbnb():
+    """Routes the /hbnb GET request
+    """
     return 'hbnb'
 
 
 @app.route('/c/<adjective>')
 def c_is_fun(adjective):
+    """Uses variable rules to modify return according to URL
+    """
     return 'C %s' % escape(adjective.replace("_", " "))
 
 # Strict slashes allows that '/python' and '/python/'
@@ -27,6 +33,8 @@ def c_is_fun(adjective):
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def py_cool(text='is cool'):
+    """Uses variable rules to modify return according to URL
+    """
     return 'Python %s' % escape(text.replace("_", " "))
 
 
